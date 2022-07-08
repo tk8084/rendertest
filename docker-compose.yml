@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+
+  app:
+    container_name: app
+    hostname: amazonlinux.local
+    privileged: true
+    command:
+      - /sbin/init
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - type: bind
+        source: ./app
+        target: /var/www/rendertron
+    ports:
+      - target: 80
+        published: ${CONSOLE_HTTP_PORT:-80}
+        protocol: tcp
+        mode: host
+    environment:
+      TZ: Asia/Tokyo
